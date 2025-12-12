@@ -1,0 +1,14 @@
+@plugin "daisyui";
+@import "tailwindcss";
+
+.logo {
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Lilita+One&family=Shrikhand&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Yeseva+One&display=swap');
+
+}
+@keyframes blob {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  33% { transform: scale(1.1) translate(10px, -10px); }
+  66% { transform: scale(0.9) translate(-10px, 10px); }
+}
+.animate-blob { animation: blob 8s infinite; }
+.animation-delay-2000 { animation-delay: 2s; }
