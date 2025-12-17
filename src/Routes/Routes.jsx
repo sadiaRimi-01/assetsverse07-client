@@ -5,6 +5,11 @@ import Login from "../Pages/Login";
 import JoinAsHR from "../Pages/JoinAsHR";
 import JoinAsEmploye from "../Pages/JoinAsEmploye";
 import AuthLayout from "../Layouts/AuthLayout";
+import PrivateRoute from "../Components/PrivateRoute";
+import Profile from "../Pages/Profile";
+import DashboardLayout from "../dashboard/DashboardLayout";
+import HrDashboard from "../dashboard/HR/HrDashboard";
+import EmployeDashboard from "../dashboard/Employee/EmployeDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +32,16 @@ export const router = createBrowserRouter([
       
       { path: "registerEmploye", element: <JoinAsEmploye></JoinAsEmploye> },
       
+    ],
+  },
+ {
+    path: "/dashboard",
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    children: [
+      { path: "hr", element: <HrDashboard /> },
+      { path: "employee", element: <EmployeDashboard /> },
+      { path: "hr/profile", element: <Profile /> },
+      { path: "employee/profile", element: <Profile /> },
     ],
   },
 
