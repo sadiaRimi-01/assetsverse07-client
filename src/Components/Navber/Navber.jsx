@@ -17,8 +17,8 @@ const Navbar = () => {
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex items-center gap-6 font-medium text-lg">
                     <Link to="/" className="hover:text-indigo-200 transition-colors">Home</Link>
-                    <Link to="/employee" className="hover:text-indigo-200 transition-colors">Join as Employee</Link>
-                    <Link to="/hr" className="hover:text-indigo-200 transition-colors">Join as HR</Link>
+                    <Link to="/auth/registerEmploye" className="hover:text-indigo-200 transition-colors">Join as Employee</Link>
+                    <Link to="/auth/registerHR" className="hover:text-indigo-200 transition-colors">Join as HR</Link>
                 </ul>
 
                 {/* Login Button */}
