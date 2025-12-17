@@ -10,6 +10,9 @@ import Profile from "../Pages/Profile";
 import DashboardLayout from "../dashboard/DashboardLayout";
 import HrDashboard from "../dashboard/HR/HrDashboard";
 import EmployeDashboard from "../dashboard/Employee/EmployeDashboard";
+import HrRoutes from "./HrRoutes";
+import AddAssets from "../dashboard/HR/AddAssets";
+import UpgradePackage from "../dashboard/HR/UpgradePackage";
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +41,9 @@ export const router = createBrowserRouter([
     path: "/dashboard",
     element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
     children: [
-      { path: "hr", element: <HrDashboard /> },
+      { path: "hr", element: <HrRoutes><HrDashboard /></HrRoutes> },
+      { path: "hr/add-asset", element: <HrRoutes><AddAssets /></HrRoutes> },
+      { path: "hr/upgrade", element: <HrRoutes><UpgradePackage></UpgradePackage></HrRoutes> },
       { path: "employee", element: <EmployeDashboard /> },
       { path: "hr/profile", element: <Profile /> },
       { path: "employee/profile", element: <Profile /> },
