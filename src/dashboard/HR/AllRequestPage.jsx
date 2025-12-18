@@ -1,0 +1,139 @@
+import { useEffect, useState } from "react";
+
+const AllRequestPage = () => {
+  const [requests, setRequests] = useState([]);
+  const [assets, setAssets] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Load all pending requests and assets
+  const loadData = async () => {
+    const reqRes = await fetch("http://localhost:3000/requests");
+    const reqData = await reqRes.json();
+    setRequests(reqData);
+
+    const assetRes = await fetch("http://localhost:3000/assets");
+    const assetData = await assetRes.json();
+    setAssets(assetData);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // Approve request
+  const handleApprove = async (request) => {
+    const asset = assets.find((a) => a._id === request.assetId);
+    if (!asset || asset.availableQuantity <= 0) {
+      alert("Asset not available");
+      return;
+    }
+
+    if (!window.confirm(`Approve request for ${request.requesterName}?`)) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:3000/approve-request/${request._id}`, {
+        method: "PATCH",
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Request approved!");
+        loadData();
+      } else {
+        alert("Failed to approve request");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error approving request");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reject request
+  const handleReject = async (request) => {
+    if (!window.confirm(`Reject request for ${request.requesterName}?`)) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:3000/reject-request/${request._id}`, {
+        method: "PATCH",
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Request rejected!");
+        loadData();
+      } else {
+        alert("Failed to reject request");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error rejecting request");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="p-6 bg-white rounded shadow min-h-screen">
+      <h2 className="text-2xl font-bold mb-4">All Employee Asset Requests</h2>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Asset</th>
+              <th>Type</th>
+              <th>Company</th>
+              <th>Request Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {requests.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="text-center text-gray-400 py-4">
+                  No requests found
+                </td>
+              </tr>
+            ) : (
+              requests.map((r) => (
+                <tr key={r._id}>
+                  <td>{r.requesterName}</td>
+                  <td>{r.assetName}</td>
+                  <td>{r.assetType}</td>
+                  <td>{r.companyName}</td>
+                  <td>{new Date(r.requestDate).toLocaleDateString()}</td>
+                  <td className="capitalize">{r.requestStatus}</td>
+                  <td className="flex gap-2">
+                    {r.requestStatus === "pending" && (
+                      <>
+                        <button
+                          onClick={() => handleApprove(r)}
+                          disabled={loading}
+                          className="btn btn-sm btn-primary"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleReject(r)}
+                          disabled={loading}
+                          className="btn btn-sm btn-error"
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default AllRequestPage;
