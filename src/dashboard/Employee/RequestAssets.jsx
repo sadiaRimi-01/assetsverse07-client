@@ -208,7 +208,7 @@ const RequestAssets = () => {
 
         <div className="min-h-screen p-6 bg-gray-50">
 
-            <h2 className="text-2xl font-bold mb-6">Request Assets</h2>
+            <h2 className="text-2xl  text-indigo-600 font-bold mb-6">Request Assets</h2>
 
 
 

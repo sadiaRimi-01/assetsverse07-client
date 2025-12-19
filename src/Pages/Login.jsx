@@ -146,7 +146,7 @@ const Login = () => {
       localStorage.setItem("userEmail", firebaseUser.email);
       localStorage.setItem("userName", firebaseUser.displayName || "User");
 
-      navigate(role === "hr" ? "/dashboard/hr" : "/dashboard/employee");
+      navigate(role === "hr" ? "/dashboard/employee" :"/dashboard/hr" );
     } catch {
       alert("Invalid email or password");
     }

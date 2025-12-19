@@ -28,7 +28,7 @@ const AllRequestPage = () => {
       return;
     }
 
-    if (!window.confirm(`Approve request for ${request.requesterName}?`)) return;
+    if (!window.confirm(`Approve request for ${request.requesterEmail}?`)) return;
 
     setLoading(true);
     try {
@@ -52,7 +52,7 @@ const AllRequestPage = () => {
 
   // Reject request
   const handleReject = async (request) => {
-    if (!window.confirm(`Reject request for ${request.requesterName}?`)) return;
+    if (!window.confirm(`Reject request for ${request.requesterEmail}?`)) return;
 
     setLoading(true);
     try {
@@ -76,7 +76,7 @@ const AllRequestPage = () => {
 
   return (
     <div className="p-6 bg-white rounded shadow min-h-screen">
-      <h2 className="text-2xl font-bold mb-4">All Employee Asset Requests</h2>
+      <h2 className="text-2xl  text-indigo-600 font-bold mb-4">All Employee Asset Requests</h2>
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -100,7 +100,7 @@ const AllRequestPage = () => {
             ) : (
               requests.map((r) => (
                 <tr key={r._id}>
-                  <td>{r.requesterName}</td>
+                  <td>{r.requesterEmail}</td>
                   <td>{r.assetName}</td>
                   <td>{r.assetType}</td>
                   <td>{r.companyName}</td>

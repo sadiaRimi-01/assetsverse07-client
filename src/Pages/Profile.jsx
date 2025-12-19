@@ -8,7 +8,7 @@ const Profile = () => {
 
   return (
     <div className="max-w-md bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">My Profile</h2>
+      <h2 className="text-2xl  text-indigo-600 font-bold mb-4">My Profile</h2>
 
       <img
         src={user?.photoURL || "https://i.ibb.co/ZxYp1Yv/user.png"}

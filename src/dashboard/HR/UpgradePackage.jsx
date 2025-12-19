@@ -213,7 +213,9 @@ const UpgradePackage = ({ userEmail }) => {
   const handleCheckout = async (pkg) => {
     setLoadingId(pkg._id);
     try {
-      const res = await fetch("http://localhost:3000/create-checkout-session", {
+     const res = await fetch("http://localhost:3000/create-checkout-session", {
+
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ packageId: pkg._id, email: userEmail }),
@@ -231,25 +233,25 @@ const UpgradePackage = ({ userEmail }) => {
 
   // Check Stripe redirect for session_id and call /payment-success
   useEffect(() => {
-    const handlePaymentSuccess = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const sessionId = params.get("session_id");
-      if (!sessionId) return;
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get("session_id");
+  if (!sessionId) return;
 
-      try {
-        const res = await safeFetchJson(`http://localhost:3000/payment-success?session_id=${sessionId}`, { method: "PATCH" });
-        if (res?.success) {
-          // Reload data immediately
-          await loadData();
-          // Clean URL
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    handlePaymentSuccess();
-  }, [userEmail]);
+  const finalizePayment = async () => {
+    const res = await safeFetchJson(
+      `http://localhost:3000/payment-success?session_id=${sessionId}`,
+      { method: "PATCH" }
+    );
+
+    if (res?.success) {
+      await loadData();
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  };
+
+  finalizePayment();
+}, [userEmail]);
+
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16">

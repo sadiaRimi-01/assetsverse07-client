@@ -58,7 +58,7 @@ const MyAssets = () => {
   return (
     <div className="p-6 bg-white rounded shadow min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold mb-2">My Assets</h2>
+        <h2 className="text-2xl  text-indigo-600 font-bold mb-2">My Assets</h2>
         <div className="flex gap-2">
           <input
             type="text"
@@ -86,12 +86,11 @@ const MyAssets = () => {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <th>Image</th>
+              <th></th>
               <th>Name</th>
               <th>Type</th>
               <th>Company</th>
-              <th>Request Date</th>
-              <th>Approval Date</th>
+              
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -104,20 +103,13 @@ const MyAssets = () => {
                 </td>
               </tr>
             ) : (
-              filteredAssets.map((a) => (
+              filteredAssets.map((a,index) => (
                 <tr key={a._id}>
-                  <td>
-                    <img
-                      src={a.assetImage || "https://i.ibb.co/2d9FzZ0/user.png"}
-                      alt={a.assetName}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  </td>
+                  <td>{index + 1}</td>
                   <td>{a.assetName}</td>
                   <td>{a.assetType}</td>
                   <td>{a.companyName}</td>
-                  <td>{new Date(a.requestDate).toLocaleDateString()}</td>
-                  <td>{a.approvalDate ? new Date(a.approvalDate).toLocaleDateString() : "-"}</td>
+                 
                   <td className="capitalize">{a.status}</td>
                   <td>
                     {a.assetType === "Returnable" && a.status === "assigned" && (

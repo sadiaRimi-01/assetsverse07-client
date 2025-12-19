@@ -44,7 +44,7 @@ const MyEmployeeList = () => {
   return (
     <div className="p-6 bg-white rounded shadow">
       <div className="flex justify-between mb-4">
-        <h2 className="text-2xl font-bold">My Employees</h2>
+        <h2 className="text-2xl  text-indigo-600 font-bold">My Employees</h2>
         <p className="font-semibold">
           {employees.length} / {limit} employees used
         </p>
