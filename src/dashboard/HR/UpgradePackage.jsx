@@ -1,324 +1,113 @@
+import { useEffect, useState } from "react";
 
+const UpgradePackage = () => {
+  const email = localStorage.getItem("userEmail");
 
-// import React, { useEffect, useState } from "react";
-
-// const UpgradePackage = ({ userEmail }) => {
-//   const [packages, setPackages] = useState([]);
-//   const [paymentHistory, setPaymentHistory] = useState([]);
-//   const [loadingId, setLoadingId] = useState(null);
-
-//   useEffect(() => {
-//     // Load packages
-//     fetch("http://localhost:3000/packages")
-//       .then(res => res.json())
-//       .then(data => setPackages(data))
-//       .catch(err => console.error(err));
-
-//     // Load payment history
-//     fetch(`http://localhost:3000/payments?email=${userEmail}`)
-//       .then(res => res.json())
-//       .then(data => setPaymentHistory(data))
-//       .catch(err => console.error(err));
-//   }, [userEmail]);
-
-//   const handleCheckout = async (pkg) => {
-//     setLoadingId(pkg._id); // ✅ only this button loading
-
-//     try {
-//       const res = await fetch("http://localhost:3000/create-checkout-session", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           packageId: pkg._id,
-//           email: userEmail,
-//         }),
-//       });
-
-//       const data = await res.json();
-
-//       if (data?.url) {
-//         window.location.href = data.url; // ✅ correct Stripe redirect
-//       } else {
-//         alert("Failed to start payment");
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       alert("Payment error");
-//     } finally {
-//       setLoadingId(null); // reset if failed
-//     }
-//   };
-
-//   return (
-//     <section className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16">
-//       <div className="max-w-7xl mx-auto px-6">
-
-//         {/* HEADER */}
-//         <div className="text-center mb-16">
-//           <h2 className="text-4xl font-bold text-gray-800 mb-3">
-//             Upgrade Your Package
-//           </h2>
-//           <p className="text-gray-600 max-w-xl mx-auto">
-//             Choose the best plan for your organization and unlock more features.
-//           </p>
-//         </div>
-
-//         {/* PACKAGES */}
-//         <div className="grid md:grid-cols-3 gap-10">
-//           {packages.map(pkg => (
-//             <div
-//               key={pkg._id}
-//               className={`relative rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1
-//               ${pkg.highlight
-//                 ? "bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white scale-105"
-//                 : "bg-white text-gray-800"
-//               }`}
-//             >
-//               {pkg.highlight && (
-//                 <span className="absolute -top-4 left-1/2 -translate-x-1/2 badge badge-warning">
-//                   Most Popular
-//                 </span>
-//               )}
-
-//               <h3 className="text-2xl font-bold mb-3">{pkg.name}</h3>
-
-//               <p className="text-4xl font-extrabold mb-4">
-//                 ${pkg.price}
-//                 <span className="text-base font-medium"> / {pkg.billing}</span>
-//               </p>
-
-//               <ul className="space-y-2 mb-6">
-//                 {pkg.features.map((feature, i) => (
-//                   <li key={i} className="flex gap-2">
-//                     ✅ {feature}
-//                   </li>
-//                 ))}
-//               </ul>
-
-//               <button
-//                 onClick={() => handleCheckout(pkg)}
-//                 disabled={loadingId === pkg._id}
-//                 className={`btn w-full
-//                   ${pkg.highlight ? "btn-neutral" : "btn-primary"}
-//                 `}
-//               >
-//                 {loadingId === pkg._id ? "Processing..." : "Upgrade Now"}
-//               </button>
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* PAYMENT HISTORY */}
-//         <div className="mt-20">
-//           <h3 className="text-3xl font-bold mb-6 text-gray-800">
-//             Payment History
-//           </h3>
-
-//           <div className="overflow-x-auto bg-white rounded-xl shadow">
-//             <table className="table table-zebra">
-//               <thead>
-//                 <tr>
-//                   <th>#</th>
-//                   <th>Package</th>
-//                   <th>Price</th>
-//                   <th>Date</th>
-//                   <th>Status</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {paymentHistory.length === 0 && (
-//                   <tr>
-//                     <td colSpan="5" className="text-center text-gray-400 py-4">
-//                       No payment history found
-//                     </td>
-//                   </tr>
-//                 )}
-
-//                 {paymentHistory.map((p, i) => (
-//                   <tr key={p._id}>
-//                     <td>{i + 1}</td>
-//                     <td>{p.packageName}</td>
-//                     <td>${p.price}</td>
-//                     <td>{new Date(p.date).toLocaleDateString()}</td>
-//                     <td className="text-green-600 font-semibold">
-//                       Paid
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default UpgradePackage;
-
-
-
-
-
-import React, { useEffect, useState } from "react";
-
-const UpgradePackage = ({ userEmail }) => {
   const [packages, setPackages] = useState([]);
-  const [paymentHistory, setPaymentHistory] = useState([]);
-  const [currentPackage, setCurrentPackage] = useState(null);
-  const [loadingId, setLoadingId] = useState(null);
-
-  // Safe fetch helper
-  const safeFetchJson = async (url, options = {}) => {
-    try {
-      const res = await fetch(url, options);
-      if (!res.ok) return null;
-      const text = await res.text();
-      return text ? JSON.parse(text) : null;
-    } catch (err) {
-      console.error("Fetch JSON error:", err);
-      return null;
-    }
-  };
-
-  // Load user, packages, and payments
-  const loadData = async () => {
-    const packagesData = await safeFetchJson("http://localhost:3000/packages");
-    const userData = await safeFetchJson(`http://localhost:3000/users/${userEmail}`);
-    const paymentsData = await safeFetchJson(`http://localhost:3000/payments?email=${userEmail}`);
-
-    if (packagesData) {
-      const currentPkgName = userData?.package || null;
-      const sortedPackages = currentPkgName
-        ? [
-            ...packagesData.filter(p => p.name === currentPkgName),
-            ...packagesData.filter(p => p.name !== currentPkgName)
-          ]
-        : packagesData;
-      setPackages(sortedPackages);
-    }
-
-    if (userData) setCurrentPackage(userData.package || "None");
-    if (paymentsData) setPaymentHistory(paymentsData);
-  };
+  const [currentUser, setCurrentUser] = useState(null);
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-  }, [userEmail]);
+    const load = async () => {
+      const [p, u, pay] = await Promise.all([
+        fetch("http://localhost:3000/packages").then(res => res.json()),
+        fetch(`http://localhost:3000/users/${email}`).then(res => res.json()),
+        fetch(`http://localhost:3000/payments/${email}`).then(res => res.json())
+      ]);
+      setPackages(p);
+      setCurrentUser(u);
+      setPayments(pay);
+      setLoading(false);
+    };
+    load();
+  }, [email]);
 
-  // Handle checkout click
-  const handleCheckout = async (pkg) => {
-    setLoadingId(pkg._id);
-    try {
-     const res = await fetch("http://localhost:3000/create-checkout-session", {
+  const handleUpgrade = async (pkg) => {
+    const res = await fetch("http://localhost:3000/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        packageName: pkg.name,
+        price: pkg.price,
+        employeeLimit: pkg.employeeLimit,
+      }),
+    });
 
-
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ packageId: pkg._id, email: userEmail }),
-      });
-      const data = await res.json();
-      if (data?.url) window.location.href = data.url;
-      else alert("Failed to start payment");
-    } catch (err) {
-      console.error(err);
-      alert("Payment error");
-    } finally {
-      setLoadingId(null);
-    }
+    const data = await res.json();
+    window.location.href = data.url;
   };
 
-  // Check Stripe redirect for session_id and call /payment-success
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const sessionId = params.get("session_id");
-  if (!sessionId) return;
-
-  const finalizePayment = async () => {
-    const res = await safeFetchJson(
-      `http://localhost:3000/payment-success?session_id=${sessionId}`,
-      { method: "PATCH" }
-    );
-
-    if (res?.success) {
-      await loadData();
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-  };
-
-  finalizePayment();
-}, [userEmail]);
-
+  if (loading) return <div className="loading loading-spinner loading-lg mx-auto mt-40"></div>;
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* HEADER */}
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-gray-800 mb-2">Upgrade Your Package</h2>
-          <p className="text-gray-600 max-w-xl mx-auto">
-            Current Package: <span className="font-semibold">{currentPackage}</span>
+    <div className="min-h-screen bg-base-200 p-8">
+      <div className="max-w-7xl mx-auto space-y-16">
+
+        {/* Cureent plan */}
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-10 text-white shadow-xl">
+          <h2 className="text-3xl font-bold">Your Current Plan</h2>
+          <p className="mt-2 text-lg">
+            <span className="font-semibold">{currentUser?.package}</span> · {currentUser?.packageLimit} Employees
           </p>
         </div>
 
-        {/* PACKAGES */}
-        <div className="grid md:grid-cols-3 gap-10 mb-20">
-          {packages.map(pkg => (
-            <div key={pkg._id} className={`relative rounded-2xl p-8 shadow-lg transition-transform hover:-translate-y-1
-              ${pkg.highlight ? "bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white scale-105" : "bg-white text-gray-800"}`}>
-              {pkg.highlight && <span className="absolute -top-4 left-1/2 -translate-x-1/2 badge badge-warning">Most Popular</span>}
-              <h3 className="text-2xl font-bold mb-3">{pkg.name}</h3>
-              <p className="text-4xl font-extrabold mb-4">${pkg.price}<span className="text-base font-medium"> / {pkg.billing}</span></p>
-              <ul className="space-y-2 mb-6">{pkg.features.map((f, i) => <li key={i}>✅ {f}</li>)}</ul>
-              <button
-                onClick={() => handleCheckout(pkg)}
-                disabled={loadingId === pkg._id}
-                className={`btn w-full ${pkg.highlight ? "btn-neutral" : "btn-primary"}`}>
-                {loadingId === pkg._id ? "Processing..." : "Upgrade Now"}
-              </button>
-            </div>
-          ))}
+        {/* Package */}
+        <div className="grid md:grid-cols-3 gap-10">
+          {packages.map(pkg => {
+            const isCurrent = currentUser?.package === pkg.name;
+            return (
+              <div key={pkg._id} className="bg-base-100 rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition">
+                <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+                <p className="text-4xl font-extrabold mb-4">${pkg.price}</p>
+                <ul className="space-y-2 mb-6">
+                  {pkg.features.map((f, i) => <li key={i}>✔ {f}</li>)}
+                </ul>
+                <button
+                  disabled={isCurrent}
+                  onClick={() => handleUpgrade(pkg)}
+                  className="btn btn-primary w-full"
+                >
+                  {isCurrent ? "Current Plan" : "Upgrade"}
+                </button>
+              </div>
+            );
+          })}
         </div>
 
-        {/* PAYMENT HISTORY */}
+        {/* Payment history */}
         <div>
-          <h3 className="text-3xl font-bold mb-6 text-gray-800">Payment History</h3>
-          <div className="overflow-x-auto bg-white rounded-xl shadow">
+          <h3 className="text-2xl font-bold mb-4">Payment History</h3>
+          <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
             <table className="table table-zebra">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Package</th>
                   <th>Amount</th>
+                  <th>Employees</th>
                   <th>Date</th>
-                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                {paymentHistory.length === 0 ? (
-                  <tr><td colSpan="5" className="text-center text-gray-400 py-4">No payment history found</td></tr>
-                ) : (
-                  paymentHistory.map((p, i) => (
-                    <tr key={p._id}>
-                      <td>{i + 1}</td>
-                      <td>{p.packageName}</td>
-                      <td>${p.amount}</td>
-                      <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
-                      <td className="text-green-600 font-semibold">{p.status}</td>
-                    </tr>
-                  ))
-                )}
+                {payments.map((p, i) => (
+                  <tr key={p._id}>
+                    <td>{i + 1}</td>
+                    <td>{p.packageName}</td>
+                    <td>${p.amount}</td>
+                    <td>{p.employeeLimit}</td>
+                    <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
+
       </div>
-    </section>
+    </div>
   );
 };
 
 export default UpgradePackage;
-

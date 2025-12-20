@@ -9,7 +9,7 @@ const HrDashboard = () => {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  // Controlled form state for editing
+   // Controlled form state for editing
   const [editForm, setEditForm] = useState({
     name: "",
     image: "",
@@ -33,19 +33,25 @@ const HrDashboard = () => {
   }, []);
 
   // Filter assets by name and type
-  useEffect(() => {
+   useEffect(() => {
     let filtered = [...assets];
-    if (searchName) {
-      filtered = filtered.filter((a) =>
-        a.name.toLowerCase().includes(searchName.toLowerCase())
+
+    const search = searchName.trim().toLowerCase();
+
+    if (search) {
+      filtered = filtered.filter(
+        (a) =>
+          typeof a?.name === "string" &&
+          a.name.toLowerCase().includes(search)
       );
     }
+
     if (filterType !== "All") {
-      filtered = filtered.filter((a) => a.type === filterType);
+      filtered = filtered.filter((a) => a?.type === filterType);
     }
+
     setFilteredAssets(filtered);
   }, [searchName, filterType, assets]);
-
   // Delete Asset
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
@@ -69,9 +75,14 @@ const HrDashboard = () => {
   // Update Asset
   const handleUpdate = (e) => {
     e.preventDefault();
+    if (!selectedAsset) return;
+
     const updatedAsset = {
-      ...editForm,
-      dateAdded: selectedAsset.dateAdded,
+      name: editForm.name,
+      type: editForm.type,
+      quantity: editForm.quantity,
+      image: editForm.image,
+      dateAdded: selectedAsset.dateAdded || new Date(),
     };
 
     fetch(`http://localhost:3000/assets/${selectedAsset._id}`, {
@@ -79,6 +90,10 @@ const HrDashboard = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedAsset),
     })
+      .then((res) => {
+        if (!res.ok) throw new Error("Update failed");
+        return res.json();
+      })
       .then(() => {
         fetchAssets();
         setIsEditOpen(false);
@@ -86,6 +101,7 @@ const HrDashboard = () => {
       })
       .catch((err) => console.error(err));
   };
+
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -165,7 +181,7 @@ const HrDashboard = () => {
         </table>
       </div>
 
-      {/* Edit Modal */}
+     {/* Edit Modal */}
       {isEditOpen && selectedAsset && (
         <div className="modal modal-open">
           <div className="modal-box relative">
@@ -185,7 +201,6 @@ const HrDashboard = () => {
                 onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
                 className="input input-bordered w-full"
                 placeholder="Image URL"
-                required
               />
               <select
                 name="type"
@@ -201,7 +216,9 @@ const HrDashboard = () => {
                 name="quantity"
                 type="number"
                 value={editForm.quantity}
-                onChange={(e) => setEditForm({ ...editForm, quantity: Number(e.target.value) })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, quantity: Number(e.target.value) })
+                }
                 className="input input-bordered w-full"
                 placeholder="Quantity"
                 required
