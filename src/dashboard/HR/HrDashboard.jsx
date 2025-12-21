@@ -72,7 +72,7 @@ const HrDashboard = () => {
     setIsEditOpen(true);
   };
 
-  // Update Asset
+  // Update asset
   const handleUpdate = (e) => {
     e.preventDefault();
     if (!selectedAsset) return;
@@ -81,7 +81,9 @@ const HrDashboard = () => {
       name: editForm.name,
       type: editForm.type,
       quantity: editForm.quantity,
+      availableQuantity: editForm.quantity,
       image: editForm.image,
+      hrEmail: selectedAsset.hrEmail || "",
       dateAdded: selectedAsset.dateAdded || new Date(),
     };
 
@@ -99,7 +101,7 @@ const HrDashboard = () => {
         setIsEditOpen(false);
         setSelectedAsset(null);
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   };
 
 
@@ -188,7 +190,6 @@ const HrDashboard = () => {
             <h3 className="text-xl font-bold mb-4 text-indigo-600">Edit Asset</h3>
             <form onSubmit={handleUpdate} className="space-y-4">
               <input
-                name="name"
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                 className="input input-bordered w-full"
@@ -196,14 +197,12 @@ const HrDashboard = () => {
                 required
               />
               <input
-                name="image"
                 value={editForm.image}
                 onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
                 className="input input-bordered w-full"
                 placeholder="Image URL"
               />
               <select
-                name="type"
                 value={editForm.type}
                 onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}
                 className="select select-bordered w-full"
@@ -213,27 +212,59 @@ const HrDashboard = () => {
                 <option>Non-returnable</option>
               </select>
               <input
-                name="quantity"
                 type="number"
                 value={editForm.quantity}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, quantity: Number(e.target.value) })
-                }
+                onChange={(e) => setEditForm({ ...editForm, quantity: Number(e.target.value) })}
                 className="input input-bordered w-full"
                 placeholder="Quantity"
                 required
               />
               <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsEditOpen(false)}
-                  className="btn btn-ghost"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Update
-                </button>
+                <button type="button" onClick={() => setIsEditOpen(false)} className="btn btn-ghost">Cancel</button>
+                <button type="submit" className="btn btn-primary">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )} {/* Edit Modal */}
+      {isEditOpen && selectedAsset && (
+        <div className="modal modal-open">
+          <div className="modal-box relative">
+            <h3 className="text-xl font-bold mb-4 text-indigo-600">Edit Asset</h3>
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <input
+                value={editForm.name}
+                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                className="input input-bordered w-full"
+                placeholder="Asset Name"
+                required
+              />
+              <input
+                value={editForm.image}
+                onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
+                className="input input-bordered w-full"
+                placeholder="Image URL"
+              />
+              <select
+                value={editForm.type}
+                onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}
+                className="select select-bordered w-full"
+                required
+              >
+                <option>Returnable</option>
+                <option>Non-returnable</option>
+              </select>
+              <input
+                type="number"
+                value={editForm.quantity}
+                onChange={(e) => setEditForm({ ...editForm, quantity: Number(e.target.value) })}
+                className="input input-bordered w-full"
+                placeholder="Quantity"
+                required
+              />
+              <div className="flex justify-end gap-2">
+                <button type="button" onClick={() => setIsEditOpen(false)} className="btn btn-ghost">Cancel</button>
+                <button type="submit" className="btn btn-primary">Update</button>
               </div>
             </form>
           </div>

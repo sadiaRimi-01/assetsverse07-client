@@ -11,7 +11,7 @@ const Profile = () => {
       <h2 className="text-2xl  text-indigo-600 font-bold mb-4">My Profile</h2>
 
       <img
-        src={user?.photoURL || "https://i.ibb.co/ZxYp1Yv/user.png"}
+        src={user?.photoURL || "https://ibb.co.com/zWnQLdnk"}
         className="w-24 h-24 rounded-full mb-4"
       />
 

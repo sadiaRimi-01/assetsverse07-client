@@ -6,24 +6,39 @@ const AddAssets = ({ onAdd }) => {
     image: "",
     type: "Returnable",
     quantity: 1,
+     companyName: "",
   });
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const newAsset = { ...asset, dateAdded: new Date().toISOString() };
+  e.preventDefault();
+  const hrEmail = localStorage.getItem("userEmail"); 
 
-    fetch("http://localhost:3000/assets", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newAsset),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setAsset({ name: "", image: "", type: "Returnable", quantity: 1 });
-        if (onAdd) onAdd();
-      })
-      .catch((err) => console.error(err));
+  const newAsset = {
+    name: asset.name,
+    image: asset.image,
+    type: asset.type,
+    quantity: asset.quantity,
+     companyName: asset.companyName, 
+     hrEmail,
+    dateAdded: new Date().toISOString(),
   };
+
+  fetch("http://localhost:3000/assets", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newAsset),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Add failed");
+      return res.json();
+    })
+    .then(() => {
+      setAsset({ name: "", image: "", type: "Returnable", quantity: 1 });
+      if (onAdd) onAdd(); // refresh list
+    })
+    .catch(console.error);
+};
+
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -37,6 +52,16 @@ const AddAssets = ({ onAdd }) => {
           onChange={(e) => setAsset({ ...asset, name: e.target.value })}
           required
         />
+        <input
+  type="text"
+  placeholder="Company Name"
+  className="input input-bordered w-full"
+  value={asset.companyName}
+  onChange={(e) =>
+    setAsset({ ...asset, companyName: e.target.value })
+  }
+  required
+/>
         <input
           type="url"
           placeholder="Product Image URL"

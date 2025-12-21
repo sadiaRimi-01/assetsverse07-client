@@ -18,11 +18,12 @@ import AllRequestPage from "../dashboard/HR/AllRequestPage";
 import RequestAssets from "../dashboard/Employee/RequestAssets";
 import MyTeam from "../dashboard/Employee/MyTeam";
 import PaymentSuccess from "../dashboard/HR/PaymentSuccess";
-
+import ErrorPage from "../Pages/ErrorPage";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePageLayout></HomePageLayout>,
+    errorElement:<ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
