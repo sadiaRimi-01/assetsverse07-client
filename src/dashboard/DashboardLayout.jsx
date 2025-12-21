@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import useRole from "../hooks/useRole";
@@ -23,7 +23,7 @@ const DashboardLayout = () => {
         {/* TOP NAVBAR */}
         <div className="navbar bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6">
           <label htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden">☰</label>
-          <div className="flex-1 text-xl font-bold">◆ AssetVerse</div>
+          <Link to="/" className="flex-1 text-xl font-bold">◆ AssetVerse</Link>
 
           {/* PROFILE */}
           <div className="relative">

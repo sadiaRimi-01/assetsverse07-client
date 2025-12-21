@@ -43,13 +43,14 @@ const MyEmployeeList = () => {
 
   return (
     <div className="p-6 bg-white rounded shadow">
-      <div className="flex justify-between mb-4">
+      <div className="flex  justify-between mb-4">
         <h2 className="text-2xl  text-indigo-600 font-bold">My Employees</h2>
-        <p className="font-semibold">
+        <p className="font-semibold  ">
           {employees.length} / {limit} employees used
         </p>
       </div>
-
+<div className="overflow-x-auto">
+  
       <table className="table table-zebra w-full">
         <thead>
           <tr>
@@ -89,6 +90,7 @@ const MyEmployeeList = () => {
           ))}
         </tbody>
       </table>
+</div>
 
       {employees.length === 0 && (
         <p className="text-center text-gray-400 mt-4">

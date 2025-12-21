@@ -1,5 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import AddAssets from "./AddAssets";
+import {
+  PieChart, Pie, Cell, Legend, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid
+} from "recharts";
 
 const HrDashboard = () => {
   const [assets, setAssets] = useState([]);
@@ -9,13 +14,14 @@ const HrDashboard = () => {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-   // Controlled form state for editing
   const [editForm, setEditForm] = useState({
     name: "",
     image: "",
     type: "Returnable",
     quantity: 0,
   });
+
+  const [requests, setRequests] = useState([]);
 
   // Fetch assets from backend
   const fetchAssets = () => {
@@ -28,21 +34,26 @@ const HrDashboard = () => {
       .catch((err) => console.error(err));
   };
 
+  // Fetch requests from backend
+  const fetchRequests = () => {
+    fetch("http://localhost:3000/requests")
+      .then((res) => res.json())
+      .then((data) => setRequests(data))
+      .catch(console.error);
+  };
+
   useEffect(() => {
     fetchAssets();
+    fetchRequests();
   }, []);
 
-  // Filter assets by name and type
-   useEffect(() => {
+  useEffect(() => {
     let filtered = [...assets];
-
     const search = searchName.trim().toLowerCase();
 
     if (search) {
       filtered = filtered.filter(
-        (a) =>
-          typeof a?.name === "string" &&
-          a.name.toLowerCase().includes(search)
+        (a) => typeof a?.name === "string" && a.name.toLowerCase().includes(search)
       );
     }
 
@@ -52,6 +63,7 @@ const HrDashboard = () => {
 
     setFilteredAssets(filtered);
   }, [searchName, filterType, assets]);
+
   // Delete Asset
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
@@ -104,10 +116,74 @@ const HrDashboard = () => {
       .catch(console.error);
   };
 
+  // ------------------- Analytics Data -------------------
+  // Pie Chart: Returnable vs Non-returnable
+  const pieData = [
+    {
+      name: "Returnable",
+      value: assets.filter((a) => a.type === "Returnable").length,
+    },
+    {
+      name: "Non-returnable",
+      value: assets.filter((a) => a.type === "Non-returnable").length,
+    },
+  ];
+  const COLORS = ["#4f46e5", "#f43f5e"];
+
+  // Bar Chart: Top 5 most requested assets
+  const topRequestedAssets = requests.reduce((acc, req) => {
+    acc[req.assetName] = (acc[req.assetName] || 0) + 1;
+    return acc;
+  }, {});
+  const barData = Object.entries(topRequestedAssets)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+
+  // --------------------------------------------------------
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold text-indigo-600 mb-4">HR Asset List</h2>
+
+      {/* Charts Section */}
+      <div className="grid md:grid-cols-2 gap-6 mb-6">
+        {/* Pie Chart */}
+        <div className="bg-white p-4 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold mb-2 text-indigo-600 text-center">Asset Type Distribution</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Legend verticalAlign="bottom" height={36} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Bar Chart */}
+        <div className="bg-white p-4 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold mb-2 text-indigo-600 text-center">Top 5 Requested Assets</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={barData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Bar dataKey="count" fill="#4f46e5" radius={[5, 5, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
 
       {/* Search and Filter */}
       <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
@@ -183,50 +259,7 @@ const HrDashboard = () => {
         </table>
       </div>
 
-     {/* Edit Modal */}
-      {isEditOpen && selectedAsset && (
-        <div className="modal modal-open">
-          <div className="modal-box relative">
-            <h3 className="text-xl font-bold mb-4 text-indigo-600">Edit Asset</h3>
-            <form onSubmit={handleUpdate} className="space-y-4">
-              <input
-                value={editForm.name}
-                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                className="input input-bordered w-full"
-                placeholder="Asset Name"
-                required
-              />
-              <input
-                value={editForm.image}
-                onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
-                className="input input-bordered w-full"
-                placeholder="Image URL"
-              />
-              <select
-                value={editForm.type}
-                onChange={(e) => setEditForm({ ...editForm, type: e.target.value })}
-                className="select select-bordered w-full"
-                required
-              >
-                <option>Returnable</option>
-                <option>Non-returnable</option>
-              </select>
-              <input
-                type="number"
-                value={editForm.quantity}
-                onChange={(e) => setEditForm({ ...editForm, quantity: Number(e.target.value) })}
-                className="input input-bordered w-full"
-                placeholder="Quantity"
-                required
-              />
-              <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setIsEditOpen(false)} className="btn btn-ghost">Cancel</button>
-                <button type="submit" className="btn btn-primary">Update</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )} {/* Edit Modal */}
+      {/* Edit Modal */}
       {isEditOpen && selectedAsset && (
         <div className="modal modal-open">
           <div className="modal-box relative">

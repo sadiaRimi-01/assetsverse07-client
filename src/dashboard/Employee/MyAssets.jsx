@@ -39,7 +39,9 @@ const MyAssets = () => {
 
   // Filtered assets
   const filteredAssets = assets.filter((a) => {
-    const matchesSearch = a.assetName.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch =
+  (a.assetName || "").toLowerCase().includes(search.toLowerCase());
+
     const matchesType = filterType === "all" || a.assetType === filterType;
     return matchesSearch && matchesType;
   });
@@ -60,7 +62,8 @@ const MyAssets = () => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h2 className="text-2xl  text-indigo-600 font-bold mb-2">My Assets</h2>
         <div className="flex gap-2">
-          <input
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <input
             type="text"
             placeholder="Search by name"
             value={search}
@@ -76,6 +79,7 @@ const MyAssets = () => {
             <option value="Returnable">Returnable</option>
             <option value="Non-returnable">Non-returnable</option>
           </select>
+          </div>
           <button onClick={handlePrint} className="btn btn-sm btn-primary">
             Print
           </button>

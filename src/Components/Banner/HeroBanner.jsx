@@ -16,14 +16,14 @@ const HeroBanner = () => {
             Corporate Asset Management Platform
           </span>
 
-          <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+          <h1 className="text-2xl md:text-5xl xl:text-6xl font-bold leading-tight mb-6">
             Manage Company Assets <br />
             <span className="text-indigo-400">
               Smartly & Securely
             </span>
           </h1>
 
-          <p className="text-slate-300 text-lg mb-8 max-w-xl">
+          <p className="text-slate-300 text-sm md:text-lg mb-8 max-w-xl">
             AssetVerse helps HR teams track, assign, and manage company assets
             with full transparency. Reduce asset loss, improve accountability,
             and streamline operations across your organization.
