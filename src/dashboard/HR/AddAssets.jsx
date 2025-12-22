@@ -34,7 +34,7 @@ const AddAssets = ({ onAdd }) => {
     })
     .then(() => {
       setAsset({ name: "", image: "", type: "Returnable", quantity: 1 });
-      if (onAdd) onAdd(); // refresh list
+      if (onAdd) onAdd(); 
     })
     .catch(console.error);
 };

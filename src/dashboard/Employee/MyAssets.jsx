@@ -42,6 +42,7 @@ const MyAssets = () => {
     const matchesSearch =
   (a.assetName || "").toLowerCase().includes(search.toLowerCase());
 
+
     const matchesType = filterType === "all" || a.assetType === filterType;
     return matchesSearch && matchesType;
   });

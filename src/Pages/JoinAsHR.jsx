@@ -20,7 +20,7 @@ const JoinAsHR = () => {
 
       // auto fields
       role: "hr",
-      packageLimit: 5,            // default free package
+      packageLimit: 5,         
       currentEmployees: 0,
       subscription: "basic",
     };

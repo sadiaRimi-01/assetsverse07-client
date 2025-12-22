@@ -12,7 +12,7 @@ const PaymentSuccess = () => {
   const packageName = params.get("packageName");
   const employeeLimit = params.get("employeeLimit");
   const amount = params.get("amount");
-  const sessionId = params.get("session_id"); // Stripe sends this
+  const sessionId = params.get("session_id"); 
 
   useEffect(() => {
     const savePayment = async () => {

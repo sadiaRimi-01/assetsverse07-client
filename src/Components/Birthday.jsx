@@ -1,7 +1,7 @@
 import React from "react";
 
 const Birthday = () => {
-  // Static employee data
+  
   const employees = [
     {
       name: "Alice Johnson",
