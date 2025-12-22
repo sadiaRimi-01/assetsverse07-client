@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
-
+import { toast } from "react-toastify";
 const MyAssets = () => {
   const { user } = useContext(AuthContext);
   const [assets, setAssets] = useState([]);
@@ -30,10 +30,10 @@ const MyAssets = () => {
     });
     const data = await res.json();
     if (data.success) {
-      alert("Asset returned successfully");
+       toast.success("Asset returned successfully");
       loadAssets();
     } else {
-      alert("Failed to return asset");
+       toast.error("Failed to return asset");
     }
   };
 

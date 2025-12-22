@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
 const AllRequestPage = () => {
   const [requests, setRequests] = useState([]);
   const [assets, setAssets] = useState([]);
@@ -24,7 +24,7 @@ const AllRequestPage = () => {
   const handleApprove = async (request) => {
     const asset = assets.find((a) => a._id === request.assetId);
     if (!asset || asset.availableQuantity <= 0) {
-      alert("Asset not available");
+     toast.error("Asset not available");
       return;
     }
 
@@ -37,14 +37,14 @@ const AllRequestPage = () => {
       });
       const data = await res.json();
       if (data.success) {
-        alert("Request approved!");
+         toast.success("Request approved!");
         loadData();
       } else {
-        alert("Failed to approve request");
+        toast.error("Approval failed");
       }
     } catch (err) {
       console.error(err);
-      alert("Error approving request");
+     toast.error("Error approving request");
     } finally {
       setLoading(false);
     }
@@ -61,14 +61,14 @@ const AllRequestPage = () => {
       });
       const data = await res.json();
       if (data.success) {
-        alert("Request rejected!");
+        toast.success("Request rejected!");
         loadData();
       } else {
-        alert("Failed to reject request");
+         toast.error("Reject failed");
       }
     } catch (err) {
       console.error(err);
-      alert("Error rejecting request");
+      toast.error("Error rejecting request");
     } finally {
       setLoading(false);
     }

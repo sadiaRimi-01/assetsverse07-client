@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../provider/AuthProvider";
 
-
+import { toast } from "react-toastify";
 const PAGE_SIZE = 9;
 const RequestAssets = () => {
 
@@ -123,7 +123,7 @@ const RequestAssets = () => {
 
         if (!note.trim()) {
 
-            alert("Please add a note.");
+           toast.warning("Please add a note");
 
             return;
 
@@ -193,7 +193,7 @@ const RequestAssets = () => {
 
             if (data.success) {
 
-                alert("Request submitted successfully!");
+                 toast.success("Request submitted successfully");
 
                 setSelectedAsset(null);
 
@@ -211,7 +211,7 @@ const RequestAssets = () => {
 
             console.error("Error submitting request:", err);
 
-            alert("Error submitting request.");
+             toast.error("Error submitting request");
 
         } finally {
 

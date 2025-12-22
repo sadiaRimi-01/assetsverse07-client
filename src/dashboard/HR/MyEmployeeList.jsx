@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
-
+import { toast } from "react-toastify";
 const MyEmployeeList = () => {
   const { user } = useContext(AuthContext);
   const [employees, setEmployees] = useState([]);
@@ -30,6 +30,7 @@ const MyEmployeeList = () => {
   }, [user]);
 
   const handleRemove = async (email) => {
+      toast.warn("Removing employee...", { autoClose: 1000 });
     if (!confirm("Remove employee from your team?")) return;
 
     await fetch(`http://localhost:3000/hr/employees/remove/${email}`, {
@@ -37,7 +38,7 @@ const MyEmployeeList = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hrEmail: user.email }),
     });
-
+ toast.success("Employee removed!");
     loadEmployees();
   };
 

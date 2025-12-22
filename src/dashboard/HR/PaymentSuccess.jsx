@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -24,14 +24,14 @@ const PaymentSuccess = () => {
           amount,
           sessionId,
         });
-
+ toast.success("Payment saved successfully!");
         // redirect back to upgrade page
         setTimeout(() => {
           navigate("/dashboard/hr/upgrade");
         }, 1500);
       } catch (err) {
         console.error("Payment save failed", err);
-        alert("Payment saved succesfully!");
+        toast.error("Payment save failed!");
       }
     };
 

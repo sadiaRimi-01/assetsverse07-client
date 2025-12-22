@@ -5,7 +5,7 @@ import {
   PieChart, Pie, Cell, Legend, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid
 } from "recharts";
-
+import { toast } from "react-toastify";
 const HrDashboard = () => {
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
@@ -68,8 +68,12 @@ const HrDashboard = () => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
     fetch(`http://localhost:3000/assets/${id}`, { method: "DELETE" })
-      .then(() => fetchAssets())
-      .catch((err) => console.error(err));
+    
+      .then(() => {
+        toast.success("Asset deleted!");
+        fetchAssets();
+      })
+      .catch(() =>toast.error("Delete failed")); 
   };
 
   // Open Edit Modal

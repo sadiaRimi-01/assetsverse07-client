@@ -21,7 +21,7 @@ const DashboardLayout = () => {
       {/* MAIN CONTENT */}
       <div className="drawer-content flex flex-col">
         {/* TOP NAVBAR */}
-        <div className="navbar bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6">
+        <div className="navbar bg-gradient-to-r from-indigo-500 to-purple-600 sticky top-0 z-50 shadow-md text-white px-6">
           <label htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden">☰</label>
           <Link to="/" className="flex-1 text-xl font-bold">◆ AssetVerse</Link>
 
@@ -29,7 +29,7 @@ const DashboardLayout = () => {
           <div className="relative">
             <img
               onClick={() => setOpen(!open)}
-              src={user?.photoURL || "https://i.ibb.co/ZxYp1Yv/user.png"}
+              src={user?.photoURL || "https://i.ibb.co.com/6Rc7hdTr/profile.jpg"}
               className="w-10 h-10 rounded-full cursor-pointer border-2 border-white"
             />
             {open && (

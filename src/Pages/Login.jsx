@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import useRole from "../hooks/useRole";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { loginUser, googleLogin, setUser } = useContext(AuthContext);
@@ -22,10 +23,11 @@ const Login = () => {
       setUser(firebaseUser);
       localStorage.setItem("userEmail", firebaseUser.email);
       localStorage.setItem("userName", firebaseUser.displayName || "User");
+      toast.success("Login successful 🎉"); // ✅ ADD
 
       navigate(role === "hr" ? "/dashboard/employee" :"/dashboard/hr" );
     } catch {
-      alert("Invalid email or password");
+      toast.error("Invalid email or password ❌");
     }
   };
 
@@ -48,10 +50,12 @@ const Login = () => {
       setUser(firebaseUser);
       localStorage.setItem("userEmail", firebaseUser.email);
       localStorage.setItem("userName", firebaseUser.displayName || "User");
+       toast.success("Google login successful 🎉"); 
 
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
+       toast.error("Google login failed ❌");
     }
   };
 

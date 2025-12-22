@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const JoinAsEmployee = () => {
   const { createUser, googleLogin } = useContext(AuthContext);
@@ -29,15 +30,15 @@ const JoinAsEmployee = () => {
       const data = await res.json();
 
       if (data.message === "user-exists") {
-        alert("Email already registered. Please login.");
+        toast.error("Email already registered. Please login.");
         return;
       }
 
-      alert("Employee Registered Successfully!");
+       toast.success("Employee Registered Successfully!");
       navigate("/");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        alert("Email already registered. Please login.");
+       toast.error("Email already registered. Please login.");
       } else {
         console.error(error);
       }
@@ -61,7 +62,7 @@ const JoinAsEmployee = () => {
         body: JSON.stringify(employeeUser),
       });
 
-      alert("Registered with Google successfully!");
+      toast.success("Registered with Google successfully!");
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
