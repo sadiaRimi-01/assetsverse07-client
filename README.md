@@ -1,16 +1,65 @@
-# React + Vite
+# 🧾 AssetsVerse – Asset Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AssetsVerse is a full-stack Asset Management System designed for companies to manage assets, employees, and asset requests efficiently.  
+The system supports **HR and Employee roles**, asset assignment, request approval workflow, subscription plans, and payment handling.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Links
 
-## React Compiler
+- **Frontend:** https://assetsverse-66415.web.app  
+- **Backend API:**https://assetsverse-app-server.vercel.app
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+### Frontend
+- React
+- React Router
+- Tailwind CSS + DaisyUI
+- React Toastify
+- Axios
+- Firebase Authentication
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Stripe Payment Gateway
+- JWT Authentication
+- Vercel Serverless Functions
+
+---
+
+## 👥 User Roles
+
+### 🔹 HR
+- Add, update, and delete company assets
+- View analytics (charts & reports)
+- Approve / reject employee asset requests
+- Manage employees
+- Upgrade subscription plan
+- View payment history
+
+### 🔹 Employee
+- View assigned assets
+- Request available assets
+- Return returnable assets
+- Track request status
+- Print asset list
+
+---
+
+## ✨ Core Features
+
+- 🔐 Authentication (Email/Password & Google Login)
+- 🏢 Company-wise asset management
+- 📦 Asset request & approval workflow
+- 📊 Analytics dashboard (Pie & Bar charts)
+- 💳 Subscription & payment system (Stripe)
+- 🔔 Toast notifications (no browser alerts)
+- 📄 Pagination & search
+- 🖨 Asset print support
+- 🌐 Fully responsive UI
+
+---
