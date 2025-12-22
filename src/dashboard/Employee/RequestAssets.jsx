@@ -59,44 +59,6 @@ const RequestAssets = () => {
 
 
 
-  // Load all assets
-
-  // const loadAssets = async () => {
-
-  //     try {
-
-  //         const res = await fetch("https://assetsverse-app-server.vercel.app/assets");
-
-  //         let data = [];
-
-  //         try {
-
-  //             data = await res.json();
-
-  //         } catch {
-
-  //             data = [];
-
-  //         }
-
-  //         setAssets(data.filter((a) => a.availableQuantity > 0));
-
-  //     } catch (err) {
-
-  //         console.error("Failed to load assets:", err);
-
-  //     }
-
-  // };
-
-
-
-  // useEffect(() => {
-
-  //     loadAssets();
-
-  // }, []);
-
 
 
   const handleRequest = async () => {
