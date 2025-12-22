@@ -127,7 +127,7 @@ const JoinAsEmployee = () => {
 
         <p className="text-center text-sm mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-indigo-600 font-semibold">
+          <Link to="/auth/login" className="text-indigo-600 font-semibold">
             Login
           </Link>
         </p>
