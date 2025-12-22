@@ -69,7 +69,7 @@ const MyEmployeeList = () => {
               <tr key={emp._id}>
                 <td>
                   <img
-                    src={emp.companyLogo || "https://i.ibb.co/2d9FzZ0/user.png"}
+                    src={emp.companyLogo || "https://i.ibb.co.com/7x9GBtYm/logo-template-40-o.avif"}
                     className="w-10 h-10 rounded-full"
                   />
                 </td>

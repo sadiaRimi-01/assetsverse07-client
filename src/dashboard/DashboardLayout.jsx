@@ -34,7 +34,7 @@ const DashboardLayout = () => {
             />
             {open && (
               <div className="absolute right-0 mt-2 w-44 bg-white text-black shadow rounded">
-                <NavLink to="profile" className="block px-4 py-2 hover:bg-gray-100">
+                <NavLink to="/dashboard/hr/profile" className="block px-4 py-2 hover:bg-gray-100">
                   My Profile
                 </NavLink>
                 <button

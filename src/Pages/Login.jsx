@@ -109,14 +109,14 @@ const Login = () => {
           <p className="text-gray-600">Don’t have an account?</p>
           <div className="flex justify-center gap-3">
             <Link
-              to="/join-hr"
+              to="/auth/registerHR"
               className="text-indigo-600 font-semibold hover:underline"
             >
               Register as HR
             </Link>
             <span className="text-gray-400">|</span>
             <Link
-              to="/join-employee"
+              to="/auth/registerEmploye"
               className="text-indigo-600 font-semibold hover:underline"
             >
               Register as Employee
