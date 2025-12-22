@@ -85,15 +85,15 @@ const Navbar = () => {
       </div>
 
       {/* NAVBAR END */}
-      <div className="navbar-end">
+      <div className=" navbar-end">
         {!user && (
-          <Link to="/auth/login" className="btn btn-primary">
+          <Link to="/auth/login" className="btn bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
             Login
           </Link>
         )}
 
         {user && (
-          <button onClick={logout} className="btn btn-error">
+          <button onClick={logout} className="btn bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
             Logout
           </button>
         )}
