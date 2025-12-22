@@ -20,7 +20,7 @@ const JoinAsHR = () => {
 
       // auto fields
       role: "hr",
-      packageLimit: 5,         
+      packageLimit: 5,
       currentEmployees: 0,
       subscription: "basic",
     };
@@ -30,7 +30,7 @@ const JoinAsHR = () => {
       await createUser(hrUser.email, form.password.value);
 
       // Save HR in MongoDB
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch("https://assetsverse-app-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(hrUser),
@@ -38,11 +38,11 @@ const JoinAsHR = () => {
 
       const data = await res.json();
       if (data.message === "user-exists") {
-         toast.error("User already exists. Please login.");
+        toast.error("User already exists. Please login.");
         return;
       }
 
-       toast.success("HR Registered Successfully!");
+      toast.success("HR Registered Successfully!");
       navigate("/dashboard/hr");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
@@ -72,12 +72,12 @@ const JoinAsHR = () => {
         subscription: "basic",
       };
 
-      await fetch("http://localhost:3000/users", {
+      await fetch("https://assetsverse-app-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(hrUser),
       });
- toast.success("Registered with Google successfully!");
+      toast.success("Registered with Google successfully!");
       navigate("/dashboard/hr");
     } catch (error) {
       console.error(error);

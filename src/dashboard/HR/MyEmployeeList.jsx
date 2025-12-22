@@ -8,7 +8,7 @@ const MyEmployeeList = () => {
 
   const loadEmployees = async () => {
     const res = await fetch(
-      `http://localhost:3000/hr/employees?hrEmail=${user.email}`
+      `https://assetsverse-app-server.vercel.app/hr/employees?hrEmail=${user.email}`
     );
     const data = await res.json();
     setEmployees(data);
@@ -16,7 +16,7 @@ const MyEmployeeList = () => {
 
   const loadLimit = async () => {
     const res = await fetch(
-      `http://localhost:3000/hr/employee-limit/${user.email}`
+      `https://assetsverse-app-server.vercel.app/hr/employee-limit/${user.email}`
     );
     const data = await res.json();
     setLimit(data.limit);
@@ -30,15 +30,15 @@ const MyEmployeeList = () => {
   }, [user]);
 
   const handleRemove = async (email) => {
-      toast.warn("Removing employee...", { autoClose: 1000 });
+    toast.warn("Removing employee...", { autoClose: 1000 });
     if (!confirm("Remove employee from your team?")) return;
 
-    await fetch(`http://localhost:3000/hr/employees/remove/${email}`, {
+    await fetch(`https://assetsverse-app-server.vercel.app/hr/employees/remove/${email}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hrEmail: user.email }),
     });
- toast.success("Employee removed!");
+    toast.success("Employee removed!");
     loadEmployees();
   };
 
@@ -50,48 +50,48 @@ const MyEmployeeList = () => {
           {employees.length} / {limit} employees used
         </p>
       </div>
-<div className="overflow-x-auto">
-  
-      <table className="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Join Date</th>
-            <th>Assets</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      <div className="overflow-x-auto">
 
-        <tbody>
-          {employees.map((emp) => (
-            <tr key={emp._id}>
-              <td>
-                <img
-                  src={emp.companyLogo || "https://i.ibb.co/2d9FzZ0/user.png"}
-                  className="w-10 h-10 rounded-full"
-                />
-              </td>
-              <td>{emp.employeeName}</td>
-              <td>{emp.employeeEmail}</td>
-              <td>
-                {new Date(emp.affiliationDate).toLocaleDateString()}
-              </td>
-              <td>{emp.assetsCount}</td>
-              <td>
-                <button
-                  onClick={() => handleRemove(emp.employeeEmail)}
-                  className="btn btn-xs btn-error"
-                >
-                  Remove
-                </button>
-              </td>
+        <table className="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Join Date</th>
+              <th>Assets</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-</div>
+          </thead>
+
+          <tbody>
+            {employees.map((emp) => (
+              <tr key={emp._id}>
+                <td>
+                  <img
+                    src={emp.companyLogo || "https://i.ibb.co/2d9FzZ0/user.png"}
+                    className="w-10 h-10 rounded-full"
+                  />
+                </td>
+                <td>{emp.employeeName}</td>
+                <td>{emp.employeeEmail}</td>
+                <td>
+                  {new Date(emp.affiliationDate).toLocaleDateString()}
+                </td>
+                <td>{emp.assetsCount}</td>
+                <td>
+                  <button
+                    onClick={() => handleRemove(emp.employeeEmail)}
+                    className="btn btn-xs btn-error"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {employees.length === 0 && (
         <p className="text-center text-gray-400 mt-4">

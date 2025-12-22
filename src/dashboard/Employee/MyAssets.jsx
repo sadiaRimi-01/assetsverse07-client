@@ -11,7 +11,7 @@ const MyAssets = () => {
   // Load assigned assets
   const loadAssets = async () => {
     const res = await fetch(
-      `http://localhost:3000/assigned-assets?email=${user.email}`
+      `https://assetsverse-app-server.vercel.app/assigned-assets?email=${user.email}`
     );
     const data = await res.json();
     setAssets(data);
@@ -25,22 +25,22 @@ const MyAssets = () => {
   const handleReturn = async (asset) => {
     if (!window.confirm("Are you sure you want to return this asset?")) return;
 
-    const res = await fetch(`http://localhost:3000/return-asset/${asset._id}`, {
+    const res = await fetch(`https://assetsverse-app-server.vercel.app/return-asset/${asset._id}`, {
       method: "PATCH",
     });
     const data = await res.json();
     if (data.success) {
-       toast.success("Asset returned successfully");
+      toast.success("Asset returned successfully");
       loadAssets();
     } else {
-       toast.error("Failed to return asset");
+      toast.error("Failed to return asset");
     }
   };
 
   // Filtered assets
   const filteredAssets = assets.filter((a) => {
     const matchesSearch =
-  (a.assetName || "").toLowerCase().includes(search.toLowerCase());
+      (a.assetName || "").toLowerCase().includes(search.toLowerCase());
 
 
     const matchesType = filterType === "all" || a.assetType === filterType;
@@ -65,21 +65,21 @@ const MyAssets = () => {
         <div className="flex gap-2">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <input
-            type="text"
-            placeholder="Search by name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="input input-bordered input-sm"
-          />
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="select select-sm"
-          >
-            <option value="all">All Types</option>
-            <option value="Returnable">Returnable</option>
-            <option value="Non-returnable">Non-returnable</option>
-          </select>
+              type="text"
+              placeholder="Search by name"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="input input-bordered input-sm"
+            />
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="select select-sm"
+            >
+              <option value="all">All Types</option>
+              <option value="Returnable">Returnable</option>
+              <option value="Non-returnable">Non-returnable</option>
+            </select>
           </div>
           <button onClick={handlePrint} className="btn btn-sm btn-primary">
             Print
@@ -95,7 +95,7 @@ const MyAssets = () => {
               <th>Name</th>
               <th>Type</th>
               <th>Company</th>
-              
+
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -108,13 +108,13 @@ const MyAssets = () => {
                 </td>
               </tr>
             ) : (
-              filteredAssets.map((a,index) => (
+              filteredAssets.map((a, index) => (
                 <tr key={a._id}>
                   <td>{index + 1}</td>
                   <td>{a.assetName}</td>
                   <td>{a.assetType}</td>
                   <td>{a.companyName}</td>
-                 
+
                   <td className="capitalize">{a.status}</td>
                   <td>
                     {a.assetType === "Returnable" && a.status === "assigned" && (

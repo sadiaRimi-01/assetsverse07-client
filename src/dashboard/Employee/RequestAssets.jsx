@@ -6,27 +6,27 @@ import { toast } from "react-toastify";
 const PAGE_SIZE = 9;
 const RequestAssets = () => {
 
-    const { user: firebaseUser } = useContext(AuthContext); 
+  const { user: firebaseUser } = useContext(AuthContext);
 
-    const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
 
-    const [assets, setAssets] = useState([]);
+  const [assets, setAssets] = useState([]);
 
-    const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
 
-    const [note, setNote] = useState("");
+  const [note, setNote] = useState("");
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
- // pagination state
+  // pagination state
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-   // Load paginated assets
+  // Load paginated assets
   const loadAssets = async (currentPage = page) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/assets/available/paginated?page=${currentPage}&limit=${PAGE_SIZE}`
+        `https://assetsverse-app-server.vercel.app/assets/available/paginated?page=${currentPage}&limit=${PAGE_SIZE}`
       );
       const data = await res.json();
 
@@ -36,206 +36,206 @@ const RequestAssets = () => {
       console.error("Failed to load assets:", err);
     }
   };
-   useEffect(() => {
+  useEffect(() => {
     loadAssets(page);
   }, [page]);
-    // Load logged-in user info from localStorage
+  // Load logged-in user info from localStorage
 
-    useEffect(() => {
+  useEffect(() => {
 
-        const email = localStorage.getItem("userEmail");
+    const email = localStorage.getItem("userEmail");
 
-        const name = firebaseUser?.displayName || "User";
+    const name = firebaseUser?.displayName || "User";
 
 
 
-        if (email) {
+    if (email) {
 
-            setUser({ email, displayName: name });
+      setUser({ email, displayName: name });
 
-        }
+    }
 
-    }, [firebaseUser]);
+  }, [firebaseUser]);
 
 
 
-    // Load all assets
+  // Load all assets
 
-    // const loadAssets = async () => {
+  // const loadAssets = async () => {
 
-    //     try {
+  //     try {
 
-    //         const res = await fetch("http://localhost:3000/assets");
+  //         const res = await fetch("https://assetsverse-app-server.vercel.app/assets");
 
-    //         let data = [];
+  //         let data = [];
 
-    //         try {
+  //         try {
 
-    //             data = await res.json();
+  //             data = await res.json();
 
-    //         } catch {
+  //         } catch {
 
-    //             data = [];
+  //             data = [];
 
-    //         }
+  //         }
 
-    //         setAssets(data.filter((a) => a.availableQuantity > 0));
+  //         setAssets(data.filter((a) => a.availableQuantity > 0));
 
-    //     } catch (err) {
+  //     } catch (err) {
 
-    //         console.error("Failed to load assets:", err);
+  //         console.error("Failed to load assets:", err);
 
-    //     }
+  //     }
 
-    // };
+  // };
 
 
 
-    // useEffect(() => {
+  // useEffect(() => {
 
-    //     loadAssets();
+  //     loadAssets();
 
-    // }, []);
+  // }, []);
 
 
 
-    const handleRequest = async () => {
+  const handleRequest = async () => {
 
-        if (!user?.email || !user?.displayName) {
+    if (!user?.email || !user?.displayName) {
 
-            alert("User not loaded. Please login.");
+      alert("User not loaded. Please login.");
 
-            return;
+      return;
 
-        }
+    }
 
 
 
-        if (!selectedAsset) {
+    if (!selectedAsset) {
 
-            alert("Please select an asset.");
+      alert("Please select an asset.");
 
-            return;
+      return;
 
-        }
+    }
 
 
 
-        if (!note.trim()) {
+    if (!note.trim()) {
 
-           toast.warning("Please add a note");
+      toast.warning("Please add a note");
 
-            return;
+      return;
 
-        }
+    }
 
 
 
-        if (!selectedAsset.hrEmail) {
+    if (!selectedAsset.hrEmail) {
 
-            alert("HR Email not found for this asset.");
+      alert("HR Email not found for this asset.");
 
-            return;
+      return;
 
-        }
+    }
 
 
 
-        setLoading(true);
+    setLoading(true);
 
 
 
-        try {
+    try {
 
-            const res = await fetch("http://localhost:3000/requests", {
+      const res = await fetch("https://assetsverse-app-server.vercel.app/requests", {
 
-                method: "POST",
+        method: "POST",
 
-                headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
 
-                body: JSON.stringify({
+        body: JSON.stringify({
 
-                    assetId: selectedAsset._id,
+          assetId: selectedAsset._id,
 
-                    assetName: selectedAsset.name,
+          assetName: selectedAsset.name,
 
-                    assetType: selectedAsset.type,
+          assetType: selectedAsset.type,
 
-                    requesterName: user.displayName,
+          requesterName: user.displayName,
 
-                    requesterEmail: user.email,
+          requesterEmail: user.email,
 
-                    hrEmail: selectedAsset.hrEmail,
+          hrEmail: selectedAsset.hrEmail,
 
-                    companyName: selectedAsset.companyName || "",
+          companyName: selectedAsset.companyName || "",
 
-                    note,
+          note,
 
-                }),
+        }),
 
-            });
+      });
 
 
 
-            let data = null;
+      let data = null;
 
-            try {
+      try {
 
-                data = await res.json();
+        data = await res.json();
 
-            } catch {
+      } catch {
 
-                data = { success: false, message: "Invalid server response" };
+        data = { success: false, message: "Invalid server response" };
 
-            }
+      }
 
 
 
-            if (data.success) {
+      if (data.success) {
 
-                 toast.success("Request submitted successfully");
+        toast.success("Request submitted successfully");
 
-                setSelectedAsset(null);
+        setSelectedAsset(null);
 
-                setNote("");
+        setNote("");
 
-                loadAssets();
+        loadAssets();
 
-            } else {
+      } else {
 
-                alert(data.message || "Failed to submit request.");
+        alert(data.message || "Failed to submit request.");
 
-            }
+      }
 
-        } catch (err) {
+    } catch (err) {
 
-            console.error("Error submitting request:", err);
+      console.error("Error submitting request:", err);
 
-             toast.error("Error submitting request");
+      toast.error("Error submitting request");
 
-        } finally {
+    } finally {
 
-            setLoading(false);
+      setLoading(false);
 
-        }
+    }
 
-    };
+  };
 
 
 
-    return (
+  return (
 
-        <div className="min-h-screen p-6 bg-gray-50">
+    <div className="min-h-screen p-6 bg-gray-50">
 
-            <h2 className="text-2xl  text-indigo-600 font-bold mb-6">Request Assets</h2>
+      <h2 className="text-2xl  text-indigo-600 font-bold mb-6">Request Assets</h2>
 
 
 
-            {!user && <p>Loading user info...</p>}
+      {!user && <p>Loading user info...</p>}
 
 
 
-            {/* {assets.length === 0 ? (
+      {/* {assets.length === 0 ? (
 
                 <p>No assets available to request.</p>
 
@@ -293,7 +293,7 @@ const RequestAssets = () => {
 
             )} */}
 
- {assets.length === 0 ? (
+      {assets.length === 0 ? (
         <p>No assets available.</p>
       ) : (
         <>
@@ -350,83 +350,83 @@ const RequestAssets = () => {
         </>
       )}
 
-            {/* Modal */}
+      {/* Modal */}
 
-            {selectedAsset && (
+      {selectedAsset && (
 
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 
-                    <div className="bg-white rounded p-6 w-96">
+          <div className="bg-white rounded p-6 w-96">
 
-                        <h3 className="text-xl font-bold mb-4">
+            <h3 className="text-xl font-bold mb-4">
 
-                            Request {selectedAsset.productName}
+              Request {selectedAsset.productName}
 
-                        </h3>
-
-
-
-                        <textarea
-
-                            className="textarea w-full mb-4"
-
-                            placeholder="Add a note"
-
-                            value={note}
-
-                            onChange={(e) => setNote(e.target.value)}
-
-                        />
+            </h3>
 
 
 
-                        <div className="flex justify-end gap-2">
+            <textarea
 
-                            <button
+              className="textarea w-full mb-4"
 
-                                className="btn btn-sm btn-error"
+              placeholder="Add a note"
 
-                                onClick={() => {
+              value={note}
 
-                                    setSelectedAsset(null);
+              onChange={(e) => setNote(e.target.value)}
 
-                                    setNote("");
-
-                                }}
-
-                            >
-
-                                Cancel
-
-                            </button>
+            />
 
 
 
-                            <button
+            <div className="flex justify-end gap-2">
 
-                                className="btn btn-sm btn-primary"
+              <button
 
-                                onClick={handleRequest}
+                className="btn btn-sm btn-error"
 
-                                disabled={loading}
+                onClick={() => {
 
-                            >
+                  setSelectedAsset(null);
 
-                                {loading ? "Submitting..." : "Submit Request"}
+                  setNote("");
 
-                            </button>
+                }}
 
-                        </div>
+              >
 
-                    </div>
+                Cancel
 
-                </div>
+              </button>
 
-            )}
+
+
+              <button
+
+                className="btn btn-sm btn-primary"
+
+                onClick={handleRequest}
+
+                disabled={loading}
+
+              >
+
+                {loading ? "Submitting..." : "Submit Request"}
+
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
-    );
+      )}
+
+    </div>
+
+  );
 
 };
 

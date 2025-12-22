@@ -11,9 +11,9 @@ const UpgradePackage = () => {
   useEffect(() => {
     const load = async () => {
       const [p, u, pay] = await Promise.all([
-        fetch("http://localhost:3000/packages").then(res => res.json()),
-        fetch(`http://localhost:3000/users/${email}`).then(res => res.json()),
-        fetch(`http://localhost:3000/payments/${email}`).then(res => res.json())
+        fetch("https://assetsverse-app-server.vercel.app/packages").then(res => res.json()),
+        fetch(`https://assetsverse-app-server.vercel.app/users/${email}`).then(res => res.json()),
+        fetch(`https://assetsverse-app-server.vercel.app/payments/${email}`).then(res => res.json())
       ]);
       setPackages(p);
       setCurrentUser(u);
@@ -24,7 +24,7 @@ const UpgradePackage = () => {
   }, [email]);
 
   const handleUpgrade = async (pkg) => {
-    const res = await fetch("http://localhost:3000/create-checkout-session", {
+    const res = await fetch("https://assetsverse-app-server.vercel.app/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -25,7 +25,7 @@ const Login = () => {
       localStorage.setItem("userName", firebaseUser.displayName || "User");
       toast.success("Login successful 🎉"); // ✅ ADD
 
-      navigate(role === "hr" ? "/dashboard/employee" :"/dashboard/hr" );
+      navigate(role === "hr" ? "/dashboard/employee" : "/dashboard/hr");
     } catch {
       toast.error("Invalid email or password ❌");
     }
@@ -37,7 +37,7 @@ const Login = () => {
       const firebaseUser = result.user;
 
       // Save to MongoDB if needed
-      await fetch("http://localhost:3000/google-user", {
+      await fetch("https://assetsverse-app-server.vercel.app/google-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -50,12 +50,12 @@ const Login = () => {
       setUser(firebaseUser);
       localStorage.setItem("userEmail", firebaseUser.email);
       localStorage.setItem("userName", firebaseUser.displayName || "User");
-       toast.success("Google login successful 🎉"); 
+      toast.success("Google login successful 🎉");
 
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
-       toast.error("Google login failed ❌");
+      toast.error("Google login failed ❌");
     }
   };
 

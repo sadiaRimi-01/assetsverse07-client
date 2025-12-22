@@ -6,38 +6,38 @@ const AddAssets = ({ onAdd }) => {
     image: "",
     type: "Returnable",
     quantity: 1,
-     companyName: "",
+    companyName: "",
   });
 
   const handleSubmit = (e) => {
-  e.preventDefault();
-  const hrEmail = localStorage.getItem("userEmail"); 
+    e.preventDefault();
+    const hrEmail = localStorage.getItem("userEmail");
 
-  const newAsset = {
-    name: asset.name,
-    image: asset.image,
-    type: asset.type,
-    quantity: asset.quantity,
-     companyName: asset.companyName, 
-     hrEmail,
-    dateAdded: new Date().toISOString(),
+    const newAsset = {
+      name: asset.name,
+      image: asset.image,
+      type: asset.type,
+      quantity: asset.quantity,
+      companyName: asset.companyName,
+      hrEmail,
+      dateAdded: new Date().toISOString(),
+    };
+
+    fetch("https://assetsverse-app-server.vercel.app/assets", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newAsset),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Add failed");
+        return res.json();
+      })
+      .then(() => {
+        setAsset({ name: "", image: "", type: "Returnable", quantity: 1 });
+        if (onAdd) onAdd();
+      })
+      .catch(console.error);
   };
-
-  fetch("http://localhost:3000/assets", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newAsset),
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error("Add failed");
-      return res.json();
-    })
-    .then(() => {
-      setAsset({ name: "", image: "", type: "Returnable", quantity: 1 });
-      if (onAdd) onAdd(); 
-    })
-    .catch(console.error);
-};
 
 
   return (
@@ -53,15 +53,15 @@ const AddAssets = ({ onAdd }) => {
           required
         />
         <input
-  type="text"
-  placeholder="Company Name"
-  className="input input-bordered w-full"
-  value={asset.companyName}
-  onChange={(e) =>
-    setAsset({ ...asset, companyName: e.target.value })
-  }
-  required
-/>
+          type="text"
+          placeholder="Company Name"
+          className="input input-bordered w-full"
+          value={asset.companyName}
+          onChange={(e) =>
+            setAsset({ ...asset, companyName: e.target.value })
+          }
+          required
+        />
         <input
           type="url"
           placeholder="Product Image URL"

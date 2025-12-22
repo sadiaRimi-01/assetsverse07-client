@@ -21,7 +21,7 @@ const JoinAsEmployee = () => {
     try {
       await createUser(employeeUser.email, form.password.value);
 
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch("https://assetsverse-app-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(employeeUser),
@@ -34,11 +34,11 @@ const JoinAsEmployee = () => {
         return;
       }
 
-       toast.success("Employee Registered Successfully!");
+      toast.success("Employee Registered Successfully!");
       navigate("/");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-       toast.error("Email already registered. Please login.");
+        toast.error("Email already registered. Please login.");
       } else {
         console.error(error);
       }
@@ -56,7 +56,7 @@ const JoinAsEmployee = () => {
         role: "employee",
       };
 
-      await fetch("http://localhost:3000/google-user", {
+      await fetch("https://assetsverse-app-server.vercel.app/google-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(employeeUser),

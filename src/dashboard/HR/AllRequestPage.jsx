@@ -7,11 +7,11 @@ const AllRequestPage = () => {
 
   // Load all pending requests and assets
   const loadData = async () => {
-    const reqRes = await fetch("http://localhost:3000/requests");
+    const reqRes = await fetch("https://assetsverse-app-server.vercel.app/requests");
     const reqData = await reqRes.json();
     setRequests(reqData);
 
-    const assetRes = await fetch("http://localhost:3000/assets");
+    const assetRes = await fetch("https://assetsverse-app-server.vercel.app/assets");
     const assetData = await assetRes.json();
     setAssets(assetData);
   };
@@ -24,7 +24,7 @@ const AllRequestPage = () => {
   const handleApprove = async (request) => {
     const asset = assets.find((a) => a._id === request.assetId);
     if (!asset || asset.availableQuantity <= 0) {
-     toast.error("Asset not available");
+      toast.error("Asset not available");
       return;
     }
 
@@ -32,19 +32,19 @@ const AllRequestPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/approve-request/${request._id}`, {
+      const res = await fetch(`https://assetsverse-app-server.vercel.app/approve-request/${request._id}`, {
         method: "PATCH",
       });
       const data = await res.json();
       if (data.success) {
-         toast.success("Request approved!");
+        toast.success("Request approved!");
         loadData();
       } else {
         toast.error("Approval failed");
       }
     } catch (err) {
       console.error(err);
-     toast.error("Error approving request");
+      toast.error("Error approving request");
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ const AllRequestPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/reject-request/${request._id}`, {
+      const res = await fetch(`https://assetsverse-app-server.vercel.app/reject-request/${request._id}`, {
         method: "PATCH",
       });
       const data = await res.json();
@@ -64,7 +64,7 @@ const AllRequestPage = () => {
         toast.success("Request rejected!");
         loadData();
       } else {
-         toast.error("Reject failed");
+        toast.error("Reject failed");
       }
     } catch (err) {
       console.error(err);

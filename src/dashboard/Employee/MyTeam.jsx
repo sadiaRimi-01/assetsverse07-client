@@ -9,7 +9,7 @@ const MyTeam = () => {
   useEffect(() => {
     const fetchAffiliations = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/affiliations");
+        const res = await fetch("https://assetsverse-app-server.vercel.app/api/affiliations");
         const data = await res.json();
         setAffiliations(data);
 
@@ -29,7 +29,7 @@ const MyTeam = () => {
   // Employees of selected company
   const employees = affiliations.filter((a) => a.companyName === selectedCompany);
 
-  
+
 
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -60,8 +60,8 @@ const MyTeam = () => {
             key={emp.employeeEmail}
             className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center hover:shadow-2xl transition-all duration-300"
           >
-          
-           
+
+
             <h2 className="font-semibold">{emp.employeeName}</h2>
             <p className="text-sm text-gray-600">{emp.employeeEmail}</p>
             <p className="text-sm text-gray-500">{emp.position}</p>
@@ -69,7 +69,7 @@ const MyTeam = () => {
         ))}
       </div>
 
-     <Birthday></Birthday>
+      <Birthday></Birthday>
     </div>
   );
 };

@@ -12,19 +12,19 @@ const PaymentSuccess = () => {
   const packageName = params.get("packageName");
   const employeeLimit = params.get("employeeLimit");
   const amount = params.get("amount");
-  const sessionId = params.get("session_id"); 
+  const sessionId = params.get("session_id");
 
   useEffect(() => {
     const savePayment = async () => {
       try {
-        await axios.post("http://localhost:3000/payments/success", {
+        await axios.post("https://assetsverse-app-server.vercel.app/payments/success", {
           email,
           packageName,
           employeeLimit,
           amount,
           sessionId,
         });
- toast.success("Payment saved successfully!");
+        toast.success("Payment saved successfully!");
         // redirect back to upgrade page
         setTimeout(() => {
           navigate("/dashboard/hr/upgrade");

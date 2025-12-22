@@ -25,7 +25,7 @@ const HrDashboard = () => {
 
   // Fetch assets from backend
   const fetchAssets = () => {
-    fetch("http://localhost:3000/assets")
+    fetch("https://assetsverse-app-server.vercel.app/assets")
       .then((res) => res.json())
       .then((data) => {
         setAssets(data);
@@ -36,7 +36,7 @@ const HrDashboard = () => {
 
   // Fetch requests from backend
   const fetchRequests = () => {
-    fetch("http://localhost:3000/requests")
+    fetch("https://assetsverse-app-server.vercel.app/requests")
       .then((res) => res.json())
       .then((data) => setRequests(data))
       .catch(console.error);
@@ -67,13 +67,13 @@ const HrDashboard = () => {
   // Delete Asset
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
-    fetch(`http://localhost:3000/assets/${id}`, { method: "DELETE" })
-    
+    fetch(`https://assetsverse-app-server.vercel.app/assets/${id}`, { method: "DELETE" })
+
       .then(() => {
         toast.success("Asset deleted!");
         fetchAssets();
       })
-      .catch(() =>toast.error("Delete failed")); 
+      .catch(() => toast.error("Delete failed"));
   };
 
   // Open Edit Modal
@@ -103,7 +103,7 @@ const HrDashboard = () => {
       dateAdded: selectedAsset.dateAdded || new Date(),
     };
 
-    fetch(`http://localhost:3000/assets/${selectedAsset._id}`, {
+    fetch(`https://assetsverse-app-server.vercel.app/assets/${selectedAsset._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedAsset),

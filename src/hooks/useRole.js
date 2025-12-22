@@ -15,7 +15,7 @@ const useRole = () => {
 
     const fetchRole = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/users/${email}`);
+        const res = await fetch(`https://assetsverse-app-server.vercel.app/users/${email}`);
         if (!res.ok) {
           setRole(null);
           setLoading(false);

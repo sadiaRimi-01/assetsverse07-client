@@ -4,7 +4,7 @@ const PackageSection = () => {
     const [packages, setPackages] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/packages')
+        fetch('https://assetsverse-app-server.vercel.app/packages')
             .then(res => res.json())
             .then(data => setPackages(data));
     }, []);
